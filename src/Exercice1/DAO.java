@@ -62,7 +62,7 @@ public class DAO {
      */
     public List<Commande> selectionCommande(Predicate<Commande> p) {
         List<Commande> selectCommande = new ArrayList<>();
-        for(Commande c : commandes) {
+        for(Commande c : this.commandes) {
             if(p.test(c)) {
                 selectCommande.add(c);
             }
@@ -75,12 +75,15 @@ public class DAO {
      */
     public List<Commande> selectionCommandeSurExistanceLigne(Predicate<Paire<Produit,Integer>> p) {
         List<Commande> selectionCommandes = new ArrayList<>();
-        for(Commande c : commandes) {
+        for(Commande c : this.commandes) {
+            Boolean verif = false;
             for(Paire<Produit,Integer> ligne : c.lignes()) {
                 if(p.test(ligne)) {
-                    selectionCommandes.add(c);
-                    break;
+                    verif = true;
                 }
+            }
+            if(verif == true) {
+                selectionCommandes.add(c);
             }
         }
         return selectionCommandes;

@@ -5,12 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Commande {
     private List<Paire<Produit, Integer>> lignes;
 
+    private Function<Paire<Produit,Integer>, String> formatteurLigne;
+    private static Function<Paire<Produit,Integer>, String> formatteurLigneDefaut = paire -> String.format("%s x %d = %.2f", paire.fst(), paire.snd());
+
     public Commande() {
         this.lignes = new ArrayList<>();
+        this.formatteurLigne = formatteurLigneDefaut;
     }
 
     public Commande ajouter(Produit p, int q) {
@@ -24,12 +29,7 @@ public class Commande {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("Commande\n");
-        for (Paire<Produit, Integer> ligne : lignes) {
-            str.append(String.format("%s x%d\n", ligne.fst(), ligne.snd()));
-        }
-        return str.toString();
+        return lignes.stream().map(formatteurLigne).collect(Collectors.joining("==>"));
     }
 
     /**
