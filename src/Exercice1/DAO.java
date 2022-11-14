@@ -1,6 +1,7 @@
 package Exercice1;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -60,27 +61,41 @@ public class DAO {
      * liste des commandes vérifiant un prédicat
      */
     public List<Commande> selectionCommande(Predicate<Commande> p) {
-        return commandes.stream()
-                .filter(p)
-                .collect(Collectors.toList());
+        List<Commande> selectCommande = new ArrayList<>();
+        for(Commande c : commandes) {
+            if(p.test(c)) {
+                selectCommande.add(c);
+            }
+        }
+        return selectCommande;
     }
 
     /**
      * liste des commandes dont au moins une ligne vérifie un prédicat
      */
     public List<Commande> selectionCommandeSurExistanceLigne(Predicate<Paire<Produit,Integer>> p) {
-        return commandes.stream()
-                .filter(c -> c.lignes().stream().anyMatch(p))
-                .collect(Collectors.toList());
+        List<Commande> selectionCommandes = new ArrayList<>();
+        for(Commande c : commandes) {
+            for(Paire<Produit,Integer> ligne : c.lignes()) {
+                if(p.test(ligne)) {
+                    selectionCommandes.add(c);
+                    break;
+                }
+            }
+        }
+        return selectionCommandes;
     }
 
     /**
      * ensemble des différents produits commandés vérifiant un prédicat
      */
     public Set<Produit> selectionProduits(Predicate<Produit> p) {
-        return produits()
-                .stream()
-                .filter(p)
-                .collect(Collectors.toSet());
+        Set<Produit> produits = new HashSet<>();
+        for (Produit produit : produits()) {
+            if (p.test(produit)) {
+                produits.add(produit);
+            }
+        }
+        return produits;
     }
 }
