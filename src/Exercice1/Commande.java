@@ -11,7 +11,7 @@ public class Commande {
     private List<Paire<Produit, Integer>> lignes;
 
     private Function<Paire<Produit,Integer>, String> formatteurLigne;
-    private static Function<Paire<Produit,Integer>, String> formatteurLigneDefaut = paire -> String.format("%s x %d = %.2f", paire.fst(), paire.snd());
+    private static Function<Paire<Produit,Integer>, String> formatteurLigneDefaut = paire -> String.format("%s x %d = %.2f", paire.fst(), paire.snd(), paire.fst().prix() * paire.snd());
 
     public Commande() {
         this.lignes = new ArrayList<>();
