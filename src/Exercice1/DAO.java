@@ -51,10 +51,13 @@ public class DAO {
      * ensemble des différents produits commandés
      */
     public Set<Produit> produits() {
-        return commandes.stream()
-                .flatMap(c -> c.lignes().stream())
-                .map(Paire::fst)
-                .collect(Collectors.toSet());
+        Set<Produit> produits = new HashSet<>();
+        for (Commande c : commandes) {
+            for (Paire<Produit, Integer> p : c.lignes()) {
+                produits.add(p.fst());
+            }
+        }
+        return produits;
     }
 
     /**
